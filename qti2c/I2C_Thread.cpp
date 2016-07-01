@@ -179,7 +179,7 @@ void I2C_Thread::run()
 
 
 
-            fd = open("/dev/i2c-1",O_RDWR);
+            fd = open("/dev/i2c-0",O_RDWR);
 
             if(fd < 0){
 
@@ -194,30 +194,35 @@ void I2C_Thread::run()
             ioctl(fd, I2C_RETRIES, 2);/*set retry times*/
             unsigned char tmp_buffer[1];
 
-            memset(tmp_buffer, 0x00, 1);
+            unsigned char tmp_buffer1[1];
 
-            i2c_read(fd,0x3a,0x0,tmp_buffer,1);
+            memset(tmp_buffer, 0x58, 1);
+
+            memset(tmp_buffer1, 0x57, 1);
+
+            i2c_read(fd,0x56,0x10,tmp_buffer,1);
             sprintf(szTemp,"%d",tmp_buffer[0]);
             iTemp = strtol(szTemp,NULL,10);
-            iTemp=iTemp-64;
+           // iTemp=iTemp-64;
             //printf("Data ==> %d\n", iTemp);
-            //i2c_read(fd,0x3a,0x0,tmp_buffer,1);
+            //i2c_read(fd,0x56,0x0,tmp_buffer,1);
             //printf("Data ==> %x\n", tmp_buffer[0]);
-            //i2c_read(fd,0x3a,0x15,tmp_buffer,1);
+            //i2c_read(fd,0x56,0x15,tmp_buffer,1);
             //printf("Data ==> %x\n", tmp_buffer[0]);
 
-            i2c_read(fd,0x3a,0x1,tmp_buffer,1);
+            i2c_read(fd,0x56,0x11,tmp_buffer,1);
             sprintf(szTemp,"%d",tmp_buffer[0]);
             iRemoteTemp = strtol(szTemp,NULL,10);
-            iRemoteTemp=iRemoteTemp-64;
+           // iRemoteTemp=iRemoteTemp-64;
             //printf("Data ==> %d\n", iTemp);
-            i2c_read(fd,0x3a,0x10,tmp_buffer,1);
-            sprintf(szTemp,"%d",tmp_buffer[0]>>4);
+            i2c_read(fd,0x56,0x12,tmp_buffer,1);
+            sprintf(szTemp,"%d",tmp_buffer[0]>>3);
             fTemp = strtol(szTemp,NULL,10);
-            fTemp=fTemp*0.0625+iRemoteTemp;
+           // fTemp=fTemp*0.0625+iRemoteTemp;
             //printf("Data ==> %0.4f\n", fTemp);
-            //i2c_read(fd,0x3a,0x1,tmp_buffer,1);
+            //i2c_read(fd,0x56,0x1,tmp_buffer,1);
             //printf("Data ==> %x\n", tmp_buffer[0]);
+            i2c_write(fd, 0x56, 0x37, 0x60, 1 );
 
 
     if (fd)
@@ -229,3 +234,7 @@ void I2C_Thread::run()
     //emit finished();
 }
 
+//int i2c_write(int fd, unsigned char slvAddr, unsigned short index, unsigned char * const data, unsigned char len )
+//i2c_write(fd, 0x56, 0x20, 0x55, 1 );
+//int i2c_read(int fd, unsigned char slvAddr, unsigned short index, unsigned char *data, int len)
+//i2c_read(fd,0x56,0x20,tmp_buffer,1);
