@@ -222,7 +222,7 @@ void I2C_Thread::run()
             //printf("Data ==> %0.4f\n", fTemp);
             //i2c_read(fd,0x56,0x1,tmp_buffer,1);
             //printf("Data ==> %x\n", tmp_buffer[0]);
-            i2c_write(fd, 0x56, 0x37, 0x60, 1 );
+            i2c_write(fd, 0x56, 0x37, tmp_buffer1, 1 );
 
 
     if (fd)
