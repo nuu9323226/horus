@@ -65,7 +65,7 @@ struct i2c_msg storage_msg[2];
 
 
 
-int i2c_write(int fd, unsigned char slvAddr, unsigned short index, unsigned char * const data, unsigned char len )
+int i2c_write(int fd, unsigned char slvAddr, unsigned char index, unsigned char * const data, unsigned char len )
 
 {
 
@@ -85,17 +85,17 @@ int i2c_write(int fd, unsigned char slvAddr, unsigned short index, unsigned char
 
 
 
-        memcpy(tmp, (unsigned char *)&index, sizeof(unsigned short));
+        memcpy(tmp, (unsigned char *)&index, sizeof(unsigned char));
 
-        memcpy((tmp + sizeof(unsigned short)), data, len);
+        memcpy((tmp + sizeof(unsigned char)), data, len);
 
-        len += sizeof(unsigned short);
+        len += sizeof(unsigned char);
 
 
 
         /***write data to storage**/
 
-        storage_data.nmsgs = 1;
+       storage_data.nmsgs = 1;
 
         (storage_data.msgs[0]).len = len; // Data length
 
@@ -222,7 +222,7 @@ void I2C_Thread::run()
             //printf("Data ==> %0.4f\n", fTemp);
             //i2c_read(fd,0x56,0x1,tmp_buffer,1);
             //printf("Data ==> %x\n", tmp_buffer[0]);
-            i2c_write(fd, 0x56, 0x37, tmp_buffer1, 1 );
+            i2c_write(fd, 0x56, 0x47, tmp_buffer1, 1 );
 
 
     if (fd)
